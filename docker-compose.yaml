@@ -7,6 +7,13 @@ services:
 
   cron:
     image: andreescuc/warehouse_management_cron
+    network_mode: "host"
+
+  rabbit:
+    image: rabbitmq:3-management
+    ports:
+      - "8002:15672"
+      - "8003:5672"
 
   client:
     image: andreescuc/warehouse_management_client_app
@@ -15,14 +22,10 @@ services:
     environment:
       DISPLAY: $DISPLAY
     network_mode: "host"
+    depends_on:
+      - rabbit
 
   mysql:
     image: andreescuc/warehouse_management_mysql
     ports:
       - "3307:3306"
-
-  rabbit:
-    image: rabbitmq:3-management
-    ports:
-      - "8002:15672"
-      - "8003:5672"
